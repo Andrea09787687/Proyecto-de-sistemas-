@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lugares Turísticos de Soacha y Bogotá</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            max-width: 900px; 
+            margin: 0 auto; 
+            background-image: url('https://images.vexels.com/media/users/3/166925/raw/29bea4762c52b19c54c867322e54a094-diseno-de-fondo-abstracto-azul.jpg'); /* Reemplaza con la URL de la imagen de pajaritos */
+            background-repeat: no-repeat;
+            background-position: center; 
+            background-size: cover;         }
+ 
+        h1, h2 {
+            color: red; 
+text-align: center; 
+        }
+        h2 {
+            font-size: 1.5em;         }
+              .map {
+            height: 300px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+          .lugar {
+        margin-bottom: 40px;
+        border: 2px solid red; 
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #87CEEB; 
+        background-image: url('https://wallpapers.com/images/featured-full/tie-dye-azul-fm4r40yqvfydeseg.jpg'); 
+        background-size: cover; 
+        background-position: center; 
+        text-align: center;
+    }
+        img {
+            max-width: 300px;
+            height: auto;
+            margin: 10px auto;
+            display: block;
+        }
+        .descripcion {
+            margin-bottom: 30px;
+            font-size: 1.2em;
+            text-align: center;
+        .button-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-container {
+            display: flex;
+            flex-grow: 1; 
+        }
+
+        #searchInput {
+            margin-left: 10px; 
+            margin-right: 10px; 
+            flex-grow: 1;         }
+
+        button {
+            margin-top: 15px;
+        }
+ }
+         .cronograma-button {
+          background-color:white;
+            color: black;
+            border: 2px solid red;
+            margin-left: 700px; 
+            margin-top: 0px;
+            margin-bottom: 50px; 
+            padding: 5px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+}
+        }
+    </style>
+</head>
+<body>
+    <h1>Lugares Turísticos de Soacha y Bogotá</h1>
+<img src="https://img.freepik.com/vetores-premium/guia-turistico-turista-cabecalho-tipografico-ouvindo-a-historia_277904-14248.jpg?w=2000" alt="Encabezado" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+    
+    <div class="descripcion">
+        En esta página podrás ver algunas zonas turísticas donde podrás ir desde Soacha y Bogotá. Explora estos lugares y disfruta de lo que ofrecen.
+    </div>
+<div class="button-container">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Buscar lugar...">
+            <button onclick="searchPlace()">Buscar</button>
+        </div>
+
+ </div>
+
+
+        <button class="cronograma-button" onclick="toggleCronograma()">Mostrar Cronograma de Visitas</button>
+    </div>
+
+    <div class="cronograma" id="cronograma" style="display: none;">
+        <h2>Cronograma de Visitas</h2>
+        <ul>
+            <li>Parque Principal de Soacha: Lunes a Domingo, 8:00 AM - 8:00 PM</li>
+            <li>Cerro de Las Cuchillas: Martes a Domingo, 6:00 AM - 6:00 PM</li>
+            <li>Catedral de Soacha: Lunes a Domingo, 7:00 AM - 5:00 PM</li>
+            <li>Parque de los Eucaliptos: Lunes a Domingo, 8:00 AM - 8:00 PM</li>
+            <li>Centro Comercial Soacha Plaza: Lunes a Domingo, 10:00 AM - 10:00 PM</li>
+            <li>Plaza de la Cultura: Jueves a Domingo, 10:00 AM - 8:00 PM</li>
+            <li>Parque de La Paz: Lunes a Domingo, 6:00 AM - 8:00 PM</li>
+            <li>Monumento a los Héroes: Lunes a Domingo, 24 horas</li>
+            <li>Parque El Chicó: Lunes a Domingo, 6:00 AM - 9:00 PM</li>
+        </ul>
+    </div>
+
+    <div class="lugar" data-name="Parque Principal de Soacha">
+        <h2>1. Parque Principal de Soacha</h2>
+        <img src="https://tendenciasocial.com/wp-content/uploads/2020/05/Tendencia-Social-Cambio-el-parque-de-saocha.jpg" alt="Parque Principal de Soacha">
+        <img src="https://i0.wp.com/soachailustrada.com/wp-content/uploads/2023/06/nuevo-alumbrado-publico-del-parque-principal-de-Soacha.jpg" alt="Parque Principal de Soacha - Imagen 2">
+        <img src="https://th.bing.com/th/id/OIP.sFjnRa6BOltmHNBmrvc0lAHaED?w=640&h=350&rs=1&pid=ImgDetMain" alt="Parque Principal de Soacha - Imagen 3">
+        <p>Un lugar ideal para pasear y disfrutar de actividades al aire libre, rodeado de jardines y áreas verdes. Es el corazón de la ciudad, donde se realizan eventos culturales y comunitarios.</p>
+        <div id="map1" class="map"></div>
+    </div>
+
+    <div class="lugar"  data-name="Cerro de Las Cuchillas">
+
+        <h2>2. Cerro de Las Cuchillas</h2>
+        <img src="https://soachainiciativaciudadana.com/wp-content/uploads/2020/09/WhatsApp-Image-2020-09-02-at-3.39.57-PM.jpeg" alt="Cerro de Las Cuchillas">
+        <img src="https://th.bing.com/th/id/OIP.IIqbTOzLFJAdVrqNkAOLdAHaFj?rs=1&pid=ImgDetMain" alt="Cerro de Las Cuchillas - Imagen 2">
+        <p>Un destino perfecto para senderistas, con rutas que ofrecen panorámicas impresionantes de la región. Es un lugar ideal para desconectarse y disfrutar de la naturaleza.</p>
+        <div id="map2" class="map"></div>
+    </div>
+
+    <div class="lugar" data-name="Catedral de Soacha">
+
+        <h2>3. Catedral de Soacha</h2>
+        <img src="https://static-uat.cambiocolombia.com/s3fs-public/2023-08/imagen_de_whatsapp_2023-03-09_a_las_20.31.54_1.jpg" alt="Catedral de Soacha">
+        <img src="https://c1.staticflickr.com/3/2308/3767120985_147dbfa23f_b.jpg" alt="Catedral de Soacha - Imagen 2">
+        <p>Esta hermosa catedral es un lugar de culto y un punto de interés arquitectónico en la ciudad. Su arquitectura y vitrales son dignos de admirar.</p>
+        <div id="map3" class="map"></div>
+    </div>
+
+    <div class="lugar"  data-name="Parque de los Eucaliptos">
+
+        <h2>4. Parque de los Eucaliptos</h2>
+        <img src="https://elnuevotiempo.com/wp-content/uploads/2020/11/WhatsApp-Image-2020-11-29-at-12.12.51.jpg" alt="Parque de los Eucaliptos">
+        <img src="https://th.bing.com/th/id/OIP.n25LHFWLDApvUczL5NFwXQHaE8?rs=1&pid=ImgDetMain" alt="Parque de los Eucaliptos - Imagen 2">
+        <img src="https://nuestrasnoticiasbajio.com/wp-content/uploads/2023/03/WhatsApp-Image-2023-03-24-at-1.16.56-PM.jpeg" alt="Parque de los Eucaliptos - Imagen 3">
+        <p>Un espacio tranquilo, ideal para disfrutar de un picnic y la naturaleza en un ambiente relajado. Los eucaliptos crean un entorno fresco y acogedor.</p>
+        <div id="map4" class="map"></div>
+    </div>
+
+    <div class="lugar" data-name="Centro Comercial Soacha Plaza">
+
+        <h2>5. Centro Comercial Soacha Plaza</h2>
+        <img src="https://th.bing.com/th/id/OIP.HcSPAOL7q_4Z4RbAMkCHhQHaE7?rs=1&pid=ImgDetMain" alt="Centro Comercial Soacha Plaza">
+        <img src="https://image.isu.pub/140410135303-b0519bb7fe781107a6fc4f16b411f625/jpg/page_3_thumb_large.jpg" alt="Centro Comercial Soacha Plaza - Imagen 2">
+        <p>Un centro comercial que ofrece diversas tiendas, opciones de comida y entretenimiento para toda la familia. Es un lugar ideal para compras y recreación.</p>
+        <div id="map5" class="map"></div>
+    </div>
+
+    <div class="lugar"  data-name="Plaza de la Cultura">
+
+        <h2>6. Plaza de la Cultura</h2>
+        <img src="https://th.bing.com/th/id/OIP.uQeVE4wMbPSh1K8-baEEDQHaHa?w=600&h=600&rs=1&pid=ImgDetMain" alt="Plaza de la Cultura">
+        <img src="https://th.bing.com/th/id/R.6f25cb5fbb1180e5d5700a7fa8bdb949?rik=kAOCHZD7NqXeIg&riu=http%3a%2f%2fwww.equiro.com%2fwp-content%2fuploads%2f2016%2f02%2fequiro_museu_roses_05.jpg&ehk=gVaEVlyIws3zfuJ8o0wp0XQB8S7EldQ63ozP8R6gGp4%3d&risl=&pid=ImgRaw&r=0" alt="Plaza de la Cultura - Imagen 2">
+        <img src="https://th.bing.com/th/id/OIP.IK6CXsz4TFF0XpT3P8iOgQHaFR?w=992&h=707&rs=1&pid=ImgDetMain" alt="Plaza de la Cultura - Imagen 3">
+        <p>Un lugar vibrante donde se realizan eventos culturales, ferias y exposiciones, perfecto para disfrutar de la vida local y conocer el arte de la región.</p>
+        <div id="map6" class="map"></div>
+    </div>
+
+    <div class="lugar" data-name="Parque de La Paz">
+
+        <h2>7. Parque de La Paz</h2>
+        <img src="https://periodismopublico.com/wp-content/uploads/2020/05/4-1-768x400.jpg" alt="Parque de La Paz">
+        <img src="https://periodismopublico.com/wp-content/uploads/2020/08/Alcald%C3%ADa-parque_Soacha.jpg" alt="Parque de La Paz - Imagen 2">
+        <p>Un parque con amplias zonas verdes, ideal para caminar, correr o simplemente relajarse en un ambiente tranquilo. Es un espacio perfecto para hacer ejercicio o meditar.</p>
+        <div id="map7" class="map"></div>
+    </div>
+
+    <div class="lugar"  data-name="Monumento a los Héroes">
+
+        <h2>8. Monumento a los Héroes</h2>
+        <img src="https://th.bing.com/th/id/OIP.dReLAcYDI2XEU310lfA1mwHaE8?rs=1&pid=ImgDetMain" alt="Monumento a los Héroes">
+        <img src="https://th.bing.com/th/id/R.6417e4d1cb3bdc71dae5c258823624a8?rik=lOzo5elVkDn5%2bQ&pid=ImgRaw&r=0" alt="Monumento a los Héroes - Imagen 2">
+        <p>Un monumento emblemático que rinde homenaje a quienes han servido a la patria, un lugar de reflexión y respeto, ideal para recordar la historia local.</p>
+        <div id="map8" class="map"></div>
+    </div>
+
+    <div class="lugar"  data-name="Parque El Chicó">
+        <h2>9. Parque El Chicó</h2>
+        <img src="https://th.bing.com/th/id/R.d27ef6c7fb0344e665ea952e7908ef5e?rik=%2faRMUruIJ3BVcw&pid=ImgRaw&r=0" alt="Parque El Chicó">
+        <img src="https://th.bing.com/th/id/OIP.KSqN7aR_EJh1VPJgh9PAbAHaDf?rs=1&pid=ImgDetMain" alt="Parque El Chicó - Imagen 2">
+        <p>Un hermoso parque con senderos, áreas recreativas y espacios para disfrutar de la naturaleza en familia. Es un lugar perfecto para paseos en bicicleta y actividades al aire libre.</p>
+        <div id="map9" class="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        const lugares = [
+            {lat: 4.5851, lng: -74.1832, mapId: "map1", nombre: "Parque Principal de Soacha"},
+            {lat: 4.5921, lng: -74.1620, mapId: "map2", nombre: "Cerro de Las Cuchillas"},
+            {lat: 4.5731, lng: -74.1586, mapId: "map3", nombre: "Catedral de Soacha"},
+            {lat: 4.5825, lng: -74.1673, mapId: "map4", nombre: "Parque de los Eucaliptos"},
+            {lat: 4.5778, lng: -74.1901, mapId: "map5", nombre: "Centro Comercial Soacha Plaza"},
+            {lat: 4.5801, lng: -74.1835, mapId: "map6", nombre: "Plaza de la Cultura"},
+            {lat: 4.5751, lng: -74.1768, mapId: "map7", nombre: "Parque de La Paz"},
+            {lat: 4.5889, lng: -74.1801, mapId: "map8", nombre: "Monumento a los Héroes"},
+            {lat: 4.5862, lng: -74.1863, mapId: "map9", nombre: "Parque El Chicó"},
+        ];
+
+        lugares.forEach(lugar => {
+            const map = L.map(lugar.mapId).setView([lugar.lat, lugar.lng], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            L.marker([lugar.lat, lugar.lng]).addTo(map)
+                .bindPopup(lugar.nombre)
+                .openPopup();
+        });
+
+  function toggleCronograma() {
+            const cronograma = document.getElementById('cronograma');
+            if (cronograma.style.display === 'none') {
+                cronograma.style.display = 'block';
+            } else {
+                cronograma.style.display = 'none';
+            }
+        }
+
+function searchPlace() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const lugaresElement = document.querySelectorAll('.lugar');
+
+    lugaresElement.forEach(lugar => {
+        const lugarName = lugar.getAttribute('data-name').toLowerCase();
+        if (lugarName.includes(input)) {
+            lugar.style.display = ''; // Muestra el lugar
+        } else {
+            lugar.style.display = 'none'; // Oculta el lugar
+        }
+    });
+}
+ 
+
+    </script>
+</body>
+</html>
