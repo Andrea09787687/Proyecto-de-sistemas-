@@ -13,8 +13,7 @@
             padding: 10px;
             max-width: 900px; 
             margin: 0 auto; 
-            background-image: url('https://images.vexels.com/media/users/3/166925/raw/29bea4762c52b19c54c867322e54a094-diseno-de-fondo-abstracto-azul.jpg'); /* Reemplaza con la URL de la imagen de pajaritos */
-            background-repeat: no-repeat;
+            background-image: url('https://images.vexels.com/media/users/3/166925/raw/29bea4762c52b19c54c867322e54a094-diseno-de-fondo-abstracto-azul.jpg'); 
             background-position: center; 
             background-size: cover;         }
  
@@ -25,6 +24,11 @@ text-align: center;
         h2 {
             font-size: 1.5em;         }
               .map {
+            height: 300px;
+            width: 100%;
+            margin-bottom: 20px;
+        } 
+ .map {
             height: 300px;
             width: 100%;
             margin-bottom: 20px;
@@ -134,6 +138,7 @@ text-align: center;
     <div class="descripcion">
         En esta página podrás ver algunas zonas turísticas donde podrás ir desde Soacha y Bogotá. Explora estos lugares y disfruta de lo que ofrecen.
     </div>
+
 <div class="button-container">
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="Buscar lugar...">
@@ -144,6 +149,10 @@ text-align: center;
 
         <button class="cronograma-button" onclick="toggleCronograma()">Mostrar Cronograma de Visitas</button>
     </div>
+
+<button class="cronograma-button" onclick="toggleMap()">Mostrar Mapa General</button>
+    <div class="map" id="generalMap" style="display: none;"></div>
+
 
     <div class="cronograma" id="cronograma" style="display: none;">
         <h2>Cronograma de Visitas</h2>
@@ -176,6 +185,7 @@ Consejos de Viaje</button>
     </div>
 
     <div class="lugar" data-name="Parque Principal de Soacha">
+
         <h2>1. Parque Principal de Soacha</h2>
         <img src="https://tendenciasocial.com/wp-content/uploads/2020/05/Tendencia-Social-Cambio-el-parque-de-saocha.jpg" alt="Parque Principal de Soacha">
         <img src="https://i0.wp.com/soachailustrada.com/wp-content/uploads/2023/06/nuevo-alumbrado-publico-del-parque-principal-de-Soacha.jpg" alt="Parque Principal de Soacha - Imagen 2">
@@ -290,6 +300,42 @@ Consejos de Viaje</button>
                 .bindPopup(lugar.nombre)
                 .openPopup();
         });
+
+ function initializeMap() {
+            const map = L.map('generalMap').setView([4.6097, -74.0817], 10); 
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            lugares.forEach(lugar => {
+                L.marker([lugar.lat, lugar.lng]).addTo(map)
+                    .bindPopup(`<b>${lugar.nombre}</b>`)
+                    .openPopup();
+            });
+        }
+
+        function toggleMap() {
+            const mapDiv = document.getElementById('generalMap');
+            if (mapDiv.style.display === 'none') {
+                mapDiv.style.display = 'block';
+                initializeMap();
+            } else {
+                mapDiv.style.display = 'none';
+            }
+        }
+
+
+        function enviarComentario() {
+            const nombre = document.getElementById('nombre').value;
+            const comentario = document.getElementById('comentario').value;
+            if (nombre && comentario) {
+                alert(`Comentario de ${nombre} enviado: "${comentario}"`);
+                document.getElementById('nombre').value = '';
+                document.getElementById('comentario').value = '';
+            } else {
+                alert('Por favor, completa todos los campos.');
+            }
+        }
 
   function toggleCronograma() {
             const cronograma = document.getElementById('cronograma');
