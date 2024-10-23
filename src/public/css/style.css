@@ -1,0 +1,157 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 10px;
+    max-width: 900px;
+    margin: 0 auto;
+    background-image: url('https://images.vexels.com/media/users/3/166925/raw/29bea4762c52b19c54c867322e54a094-diseno-de-fondo-abstracto-azul.jpg');
+    /* Reemplaza con la URL de la imagen de pajaritos */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+h1,
+h2 {
+    color: rgb(255, 0, 0);
+    border: 1px lightgray;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+.map {
+    height: 300px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.map {
+    height: 300px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.lugar {
+    margin-bottom: 40px;
+    border: 1px solid lightslategrey;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #87CEEB;
+    background-image: url('https://wallpapers.com/images/featured-full/tie-dye-azul-fm4r40yqvfydeseg.jpg');
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+}
+
+img {
+    max-width: 300px;
+    height: auto;
+    margin: 10px auto;
+    display: block;
+}
+
+.descripcion {
+    padding: 20px;
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    flex-grow: 1;
+}
+
+#searchInput {
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-grow: 1;
+}
+
+
+.search-button {
+    background-color: white;
+    color: black;
+    border: 1px solid lightslategrey;
+    padding: 10px;
+    min-width: 100px;
+    flex-shrink: 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cronograma-button {
+    background-color: white;
+    color: black;
+    border: 1px solid lightslategrey;
+    margin: 0 10px;
+    margin-bottom: 50px;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.consejo {
+    display: none;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid lightslategrey;
+    border-radius: 8px;
+    background-color: #87CEEB;
+}
+
+.enviar-button {
+    border: 1px solid lightslategray;
+    color: black;
+    padding: 5px;
+    border-radius: 50 px;
+    cursor: pointer;
+}
+
+
+.comentarios h3 {
+    color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+h3{
+    text-shadow: black ;
+}
+
+.comentario-form {
+
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+input[type="text"],
+textarea {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.reaction-button {
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.reaction-button:hover {
+    background-color: #ddd;
+}
