@@ -1,26 +1,25 @@
-// reactions.js
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.reaction-button');
+const express = require('express');
+const router = express.Router();
+const db = require('../db');
 
-    buttons.forEach(button => {
-        button.addEventListener('click', () => {
-            const reaction = button.getAttribute('data-reaction');
-            
-            // Hacer una solicitud al servidor
-            fetch('/guardar-reaccion', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ reaction: reaction }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Reacción guardada:', data);
-            })
-            .catch((error) => {
-                console.error('Error al guardar la reacción:', error);
-            });
-        });
-    });
+// Endpoint para guardar la reacción
+router.post('/', (req, res) => {
+  const { reaction } = req.body;
+
+  if (!reaction) {
+    return res.status(400).json({ success: false, message: 'Reacción no proporcionada' });
+  }
+
+  const query = 'UPDATE reacciones SET cantidad = cantidad + 1 WHERE tipo = ?';
+
+  db.query(query, [reaction], (err, results) => {
+    if (err) {
+      console.error('Error al actualizar la reacción:', err);
+      return res.status(500).json({ success: false, message: 'Error al actualizar la base de datos' });
+    }
+
+    res.json({ success: true, message: 'Reacción guardada con éxito' });
+  });
 });
+
+module.exports = router;
