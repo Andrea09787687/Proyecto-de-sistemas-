@@ -9,6 +9,7 @@ router.post('/', (req, res) => {
   if (!reaction) {
     return res.status(400).json({ success: false, message: 'Reacción no proporcionada' });
   }
+  /*const query = 'INSERT INTO reactiones (tipo,cantidad) VALUES (?)';*/
 
   const query = 'UPDATE reacciones SET cantidad = cantidad + 1 WHERE tipo = ?';
 
@@ -18,7 +19,7 @@ router.post('/', (req, res) => {
       return res.status(500).json({ success: false, message: 'Error al actualizar la base de datos' });
     }
 
-    res.json({ success: true, message: 'Reacción guardada con éxito' });
+    res.json({ success: true, message: 'Reacción guardada con éxito'});
   });
 });
 

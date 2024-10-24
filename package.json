@@ -2,10 +2,9 @@
   "name": "proyecto-de-sistemas-",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server/server.js",
   "scripts": {
-    "start": "node server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server/server.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +20,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "server.js": "^1.0.0"
   }
 }

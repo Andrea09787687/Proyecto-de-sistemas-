@@ -1,23 +1,24 @@
 const mysql = require('mysql');
-const dotenv = require('dotenv');
-
-// Cargar variables de entorno
-dotenv.config();
-
-// Crear conexión a la base de datos
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+const conexion = mysql.createConnection({
+    host: 'localhost',
+    database: 'geocalizacion_soacha',
+    user: 'root',
+    password: '',
 });
 
-connection.connect((err) => {
-  if (err) {
-    console.error('Error al conectar a la base de datos:', err);
-    return;
-  }
-  console.log('Conectado a la base de datos MySQL');
+conexion.connect(function (err) {
+    if (err) {
+        console.error('Error de conexion: ' + err.stack);
+        return;
+    }
+    console.log('Conectado con el identificador ' + conexion.threadId);
+    /*conexion.end();*/
 });
 
-module.exports = connection;
+/*conexion.end((err) => {
+    if (err) return console.error(err.message);
+    console.log('Cerrando la conexión con la base de datos');
+});
+*/
+
+module.exports = conexion;

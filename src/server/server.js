@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/guardar-reaccion', reactionRoutes);
 
 // Iniciar el servidor
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.DB_PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
