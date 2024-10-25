@@ -9,8 +9,7 @@ router.post('/', (req, res) => {
   if (!reaction) {
     return res.status(400).json({ success: false, message: 'Reacción no proporcionada' });
   }
-  /*const query = 'INSERT INTO reactiones (tipo,cantidad) VALUES (?)';*/
-
+  console.log('Reacción recibida:', reaction);
   const query = 'UPDATE reacciones SET cantidad = cantidad + 1 WHERE tipo = ?';
 
   db.query(query, [reaction], (err, results) => {

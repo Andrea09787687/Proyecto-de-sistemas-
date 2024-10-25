@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             const reaction = button.getAttribute('data-reaction');
-            
+            console.log('Botón clickeado:', reaction);
             // Hacer una solicitud al servidor
             fetch('/guardar-reaccion', {
                 method: 'POST',
