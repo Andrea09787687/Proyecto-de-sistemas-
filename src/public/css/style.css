@@ -1,10 +1,12 @@
 body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 10px;
     max-width: 900px;
     margin: 0 auto;
-    background-image: url('https://images.vexels.com/media/users/3/166925/raw/29bea4762c52b19c54c867322e54a094-diseno-de-fondo-abstracto-azul.jpg');
+    background-color: azure;
+    /*background-image: url('https://images.vexels.com/media/users/3/166925/raw/29bea4762c52b19c54c867322e54a094-diseno-de-fondo-abstracto-azul.jpg');*/
     /* Reemplaza con la URL de la imagen de pajaritos */
     background-repeat: no-repeat;
     background-position: center;
@@ -13,11 +15,14 @@ body {
 
 h1,
 h2 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     color: rgb(255, 0, 0);
     border: 1px lightgray;
     text-align: center;
 }
-
+h1{
+    font-size:50px;
+}
 h2 {
     font-size: 1.5em;
 }
@@ -35,12 +40,13 @@ h2 {
 }
 
 .lugar {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin-bottom: 40px;
-    border: 1px solid lightslategrey;
+    border: 1px solid rgb(17, 17, 17);
     border-radius: 8px;
     padding: 15px;
-    background-color: #87CEEB;
-    background-image: url('https://wallpapers.com/images/featured-full/tie-dye-azul-fm4r40yqvfydeseg.jpg');
+    background-color: #dde7eb;
+    /*background-image: url('https://wallpapers.com/images/featured-full/tie-dye-azul-fm4r40yqvfydeseg.jpg');*/
     background-size: cover;
     background-position: center;
     text-align: center;
@@ -54,6 +60,7 @@ img {
 }
 
 .descripcion {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding: 20px;
     margin-bottom: 30px;
     font-size: 1.2em;
@@ -90,6 +97,7 @@ img {
 }
 
 .cronograma-button {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     background-color: white;
     color: black;
     border: 1px solid lightslategrey;
@@ -110,6 +118,7 @@ img {
 }
 
 .enviar-button {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border: 1px solid lightslategray;
     color: black;
     padding: 5px;
@@ -119,6 +128,7 @@ img {
 
 
 .comentarios h3 {
+    
     color: rgb(255, 255, 255);
     text-align: center;
 }
@@ -128,7 +138,6 @@ h3{
 }
 
 .comentario-form {
-
     display: flex;
     flex-direction: column;
     margin-top: 10px;
@@ -136,6 +145,7 @@ h3{
 
 input[type="text"],
 textarea {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin-bottom: 10px;
     padding: 8px;
     border-radius: 4px;
