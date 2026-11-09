@@ -2,3 +2,6 @@ node_modules/
 # Power BI: archivos locales/caché
 powerbi/proyecto/**/.pbi/localSettings.json
 powerbi/proyecto/**/.pbi/cache.abf
+# Datos de conexión locales (servidor/usuario) y conexión generada
+powerbi/conexion.json
+powerbi/salidas/conexion/

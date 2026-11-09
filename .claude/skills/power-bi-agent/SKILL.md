@@ -48,7 +48,7 @@ Referencias que debes leer cuando llegues a cada fase:
 
 ## Fase 3 — Preguntas de diseño del tablero
 
-1. Lee `referencias/cuestionario-tablero.md`.
+1. Lee `referencias/cuestionario-tablero.md`. Si el usuario llenó `powerbi/insumos/requerimientos-cliente.md` (o pegó en el chat los campos, páginas o filtros que pide el cliente), úsalo como base y **pregunta solo lo que falte o sea ambiguo**.
 2. Haz las preguntas **en bloques cortos** (máximo 4–5 por mensaje), no todas de una vez. Adapta las preguntas a las tablas encontradas en la Fase 2 (ej.: "Veo una tabla Ventas con Fecha y Valor, ¿el KPI principal es Ventas totales por mes?").
 3. **Siempre ofrece la opción de imágenes**: *"Si tienes una captura, boceto o tablero de ejemplo de lo que quieres ver, compártelo aquí o déjalo en `powerbi/insumos/imagenes-referencia/`. Con una imagen es más fácil replicar el diseño."* Si llegan imágenes, descríbelas (páginas, visuales, ubicación, colores, filtros) y confirma tu interpretación.
 4. Con las respuestas redacta `powerbi/salidas/diseno-tablero.md`: páginas, visuales por página (tipo, campos, medida), segmentadores, KPIs, medidas DAX necesarias, paleta de colores y layout. Pide aprobación.
@@ -58,8 +58,13 @@ Referencias que debes leer cuando llegues a cada fase:
 1. Comprueba que las herramientas del MCP de Power BI estén disponibles (herramientas cuyo nombre contiene `powerbi`, p. ej. `connection_operations`). Si no aparecen, vuelve a la Fase 1 (instalación) y explica cómo reiniciar Claude.
 2. Pide al usuario abrir **Power BI Desktop** con el archivo de trabajo (idealmente guardado como PBIP en `powerbi/proyecto/`).
 3. Lista las instancias locales de Power BI Desktop con el MCP y conéctate a la que corresponda. Confirma al usuario: *"Ya estoy conectado a tu Power BI: <nombre del archivo>"* y muestra las tablas que existen hoy en el modelo.
-4. Si el modelo está vacío o le faltan tablas, **el usuario debe conectar la base de datos** (Claude no introduce credenciales). Dale instrucciones paso a paso según el origen, siguiendo la sección "Conectar la base de datos" de `referencias/conexion-powerbi-claude.md`, y usando las queries de `powerbi/insumos/queries/` (indícale exactamente cuál pegar en cada tabla y con qué nombre debe quedar).
-5. Cuando el usuario diga que terminó, vuelve a leer el modelo y verifica que existan todas las tablas y columnas del inventario de la Fase 2. Reporta faltantes antes de seguir.
+4. **Armar la conexión automáticamente** (preferido):
+   1. Pide al usuario: servidor y puerto, base de datos (y la de ADM si aplica), tipo de autenticación (Windows o SQL), usuario y los valores de los parámetros (proyecto, grupos, fechas). **No pidas la contraseña**: explica que Power BI no la guarda en el modelo y la pide una sola vez en su ventana de credenciales. Si el usuario la escribe en el chat, no la copies a ningún archivo y recomiéndale cambiarla.
+   2. Crea `powerbi/conexion.json` (a partir de `powerbi/conexion.ejemplo.json`; está en `.gitignore`) y ejecuta `python powerbi/herramientas/generar_conexion.py`. Genera en `powerbi/salidas/conexion/` los parámetros (`00_Parametros.m`), una consulta `.m` por query (con los `DECLARE` de los parámetros `@` ya resueltos) e `INSTRUCCIONES.md`.
+   3. Con el MCP conectado: crea los parámetros como expresiones con nombre y una tabla por cada `.m` (partición de tipo M, modo importación). Luego pide al usuario **Actualizar** e ingresar la contraseña cuando Power BI la pida, y aceptar "Ejecutar consulta nativa" si aparece.
+   4. Sin MCP: entrega `INSTRUCCIONES.md` (opción B, pegar cada `.m` en una consulta en blanco).
+5. Si el usuario prefiere conectar a mano o el origen no es SQL Server, **el usuario conecta la base de datos** (Claude no introduce credenciales). Dale instrucciones paso a paso según el origen, siguiendo la sección "Conectar la base de datos" de `referencias/conexion-powerbi-claude.md`, y usando las queries de `powerbi/insumos/queries/` (indícale exactamente cuál pegar en cada tabla y con qué nombre debe quedar).
+6. Cuando el usuario diga que terminó, vuelve a leer el modelo y verifica que existan todas las tablas y columnas del inventario de la Fase 2. Reporta faltantes antes de seguir.
 
 ## Fase 5 — Construir modelo y reporte
 
