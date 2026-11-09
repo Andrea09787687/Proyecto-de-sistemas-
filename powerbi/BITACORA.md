@@ -1,6 +1,6 @@
 # Bitácora del proyecto — Agente Power BI ↔ Claude
 
-> El agente lee este archivo al empezar para saber en qué va el proyecto. Al terminar una sesión de trabajo, agrega una entrada arriba (fecha, qué se hizo, qué quedó pendiente).
+> Bitácora del **desarrollo del agente** (uso interno del equipo). El agente no la lee al empezar ni la muestra al usuario.
 
 ## Estado actual
 
@@ -22,7 +22,10 @@
 - [ ] Llenar `insumos/requerimientos-cliente.md` del próximo cliente.
 
 ## Historial
+### 2026-11-09 (2)
+- Agente genérico para cualquier cliente (sin nombres de clientes). Nuevo orden: preguntas → instalación/conexión Claude–Power BI → vistas → conexión a la base → tablero, con pausa "listo" entre fases. Ya no abre con resumen de estado.
+
 ### 2026-11-09
 - Se crea el agente con fases: recursos/conexión → manual y queries → preguntas → vistas → "listo" y conexión → construcción → validación/publicación.
-- Se integran el manual oficial de Aranda y las lecciones del tablero GACEL / LÍNEA 3000 (sincronizar filtros, roles, mapas, validar datos reales).
+- Se integran el manual oficial de Aranda y las lecciones de un tablero real (sincronizar filtros, roles, mapas, validar datos reales).
 - Vistas de Tareas y Especialista migradas a `adw.FACT_ASDK_ITEM`; semáforo ANS por cronómetros; tiempos en minutos (formato solo en Power BI y según lo pida el usuario).

@@ -1,7 +1,7 @@
-# Manual de relaciones – Aranda Database 9.5.57 (tablero GACEL / LÍNEA 3000)
+# Manual de relaciones – Aranda Database 9.5.57
 
 Fuente oficial: https://docs.arandasoft.com/database/9.5.57
-Contenido extraído de la documentación oficial el 08/11/2026, más las reglas validadas contra la base de producción del cliente (servidor del cliente, base `ASMS`).
+Contenido extraído de la documentación oficial, más reglas validadas contra una base de producción real. Son de la base Aranda, no de un cliente en particular: confirmarlas rápido en cada cliente (ej.: con un `SELECT TOP 10`).
 
 > **Para el agente:** este archivo reemplaza la consulta directa a docs.arandasoft.com. El sitio se arma con JavaScript, así que si no tienes navegador puedes leerlo vacío. Usa este contenido como referencia.
 
@@ -9,17 +9,17 @@ Contenido extraído de la documentación oficial el 08/11/2026, más las reglas 
 
 ## 1. Reglas validadas en producción (prevalecen sobre la documentación)
 
-| Tema | Documentación | Realidad en la base del cliente |
+| Tema | Documentación | Realidad validada en producción |
 |---|---|---|
 | `FACT_ASDK_ITEM.current_time` | En **segundos** | Está en **minutos**. No usarlo para tiempos: se reemplaza por los cronómetros (`ASMS_TIMES_DATA`). |
-| Cronómetros `sdb_current_time` / `estimated_time` | "Representación en valor entero del tiempo transcurrido" | **Minutos hábiles**. El calendario es de lunes a viernes con días de 24 h: 14.400 min = 10 días hábiles. Ejemplo: GACEL-14550 tiene 16.311 min reales contra 14.400 estimados, es decir 113 %. |
+| Cronómetros `sdb_current_time` / `estimated_time` | "Representación en valor entero del tiempo transcurrido" | **Minutos hábiles**, según el calendario del ANS (ej.: lunes a viernes con días de 24 h → 14.400 min = 10 días hábiles). % de ANS = real / estimado × 100 (16.311 / 14.400 = 113 % → vencido). |
 | `current_progress` | % de avance al guardar el caso | Es `real / estimado × 100`. Queda congelado al último guardado, así que se usa el calculado con los cronómetros. |
 | Fechas | Sin zona horaria | Están en **UTC**. Para hora Colombia se aplica `DATEADD(HH, -5, fecha)`. |
 | Cronómetro en 0 en casos cerrados | — | El cronómetro **nunca corrió**, así que el ANS es "No aplica" y el caso no entra al % de cumplimiento. |
 | Fechas de atención y solución en FACT | `attention_date`, `solution_date` | Vienen NULL o congeladas. Se toman de `end_date` del cronómetro (`Attention` / `Solution`). |
 | Fecha de asignación | — | **No existe** en `FACT_ASDK_ITEM`. Habría que sacarla del historial del caso (pendiente, fase 2). |
-| Departamento y edificio del solicitante | `AFW_USERS.user_department_code` / `user_building_id` | Siempre NULL en este cliente. Sede sí: `AFW_USERS.user_site_id` → `AFW_CATALOG_CODE.code_key`. |
-| Proyectos | — | 1 = GACEL (solo ServiceCall), 2 = LÍNEA 3000, 4 = RISTI |
+| Departamento y edificio del solicitante | `AFW_USERS.user_department_code` / `user_building_id` | Pueden venir NULL según cómo esté configurado cada cliente (verificar). Sede sí: `AFW_USERS.user_site_id` → `AFW_CATALOG_CODE.code_key`. |
+| Proyectos | — | Los IDs de proyecto cambian en cada cliente: consultarlos con `SELECT proj_id, proj_name FROM ASMS_PROJECTS`. |
 | `ASDK_ITEM_DW_LAST` | Vista obsoleta | **No usar.** La documentación indica consultar `adw.FACT_ASDK_ITEM`, `adw.FACT_ASDK_ITEM_FIELDS_REVISION`, `adw.DIM_ASDK_ITEM_TEXT` y `adw.DIM_ITEM_NOTES`. |
 
 ---
@@ -82,7 +82,7 @@ https://docs.arandasoft.com/database/9.5.57/pages/adw/fact_asdk_item.html
 | created_date | DATETIME | Fecha de creación del caso |
 | created_date_sk | INT | Identificador de la dimensión de fecha de creación del caso |
 | current_progress | FLOAT | Progreso porcentual en el momento de guardar el caso |
-| current_time | FLOAT | Tiempo transcurrido en segundos del tiempo por defecto al guardar el caso (**en el cliente: minutos**, ver sección 1) |
+| current_time | FLOAT | Tiempo transcurrido en segundos del tiempo por defecto al guardar el caso (**en la práctica: minutos**, ver sección 1) |
 | customer_user_sk | INT | Identificador del cliente asignado al caso |
 | default_time_real_date | DATETIME | Fecha para el cronómetro predeterminado del caso |
 | default_time_real_date_sk | INT | Identificador de la dimensión de fecha para el cronómetro predeterminado |
@@ -274,7 +274,7 @@ Campos adicionales de compañía: `ASMS_FIELDS_DATA(_CLOSED).item_id = company_i
 1. **Parámetros `@`**: resuelto con las vistas de `insumos/vistas/` (se quitan de la vista y se filtra en Power BI por proyecto, grupo y periodo). Alternativa sin vista: `herramientas/generar_conexion.py` en modo `query` arma los `DECLARE`.
 2. **Llave Tareas → Casos**: resuelto en `vw_BI_Tareas_Resumen` con `caso_id` (= `Casos_Resumen[id]`).
 3. **Zona horaria inconsistente**: `Casos_Especialista` usa fechas UTC (no resta 5 horas) y las demás sí.
-4. **`Casos_Especialista` tiene filtros fijos** (`'Pasivocol'`, `>= '2024-08-12'`).
+4. **`Casos_Especialista` traía filtros fijos** de proyecto y fecha de corte; en la vista se quitaron (se filtra en Power BI).
 5. **Columna PROGRESO** queda vacía cuando `current_progress > 100` o cuando está entre 81 y 100 y el caso está Cerrado/Resuelto. Además "VENCIDOS ABIERTOS" incluye el estado 'Resuelto'. Conviene definir la semaforización como columna o medida en Power BI.
 6. **Tareas**: el filtro `type_id NOT IN (1,4)` deja pasar problemas (2) y cambios (3); confirmar si la intención es solo tareas. `BETWEEN @fechaini AND @fechafin` excluye el último día después de las 00:00.
 7. **CTE `campos` sin uso** en `Casos_Resumen` (se puede quitar o usar para campos adicionales).
@@ -283,5 +283,5 @@ Campos adicionales de compañía: `ASMS_FIELDS_DATA(_CLOSED).item_id = company_i
 10. Los usuarios o grupos que no tengan equivalencia salen vacíos por los LEFT JOIN; en Power BI se recomienda reemplazar los vacíos por "Sin asignar".
 11. **`ASDK_ITEM_DW_LAST` es obsoleta**: resuelto. `vw_BI_Tareas_Resumen` y `vw_BI_Casos_Especialista` ya leen de `adw.FACT_ASDK_ITEM` + `adw.DIM_ASDK_ITEM_TEXT` (las queries originales de `insumos/queries/` quedan como referencia).
 12. **`current_progress` y `current_time` no son confiables**: en `vw_BI_Casos_Especialista` el semáforo ya se calcula con cronómetros (`PCT_ANS`, `SEMAFORO_ANS`, `CUMPLE_ANS`) y en `vw_BI_Tareas_Resumen` el cumplimiento usa el cronómetro de la tarea. En `vw_BI_Casos_Resumen` usar las columnas 32–35 (cronómetros) en lugar de `30_Tiempo_Min` / `31_Progreso_del_caso`. Cronómetro en 0 en caso cerrado = ANS "No aplica" (fuera del % de cumplimiento).
-13. **Departamento y edificio** (`15_Departamento`, `17_Edificio`) vienen siempre NULL en este cliente; usar solo **Sede**.
-14. **Tiempos: todos se dejan en minutos** en las vistas (columnas `*_Min`; cronómetros = minutos hábiles, L–V con días de 24 h). La conversión a horas, días o `d h m` se hace solo en Power BI, en el formato que pida el usuario (ver `construccion-reporte.md`, sección Tiempos). Ojo: la query original tenía comentada una conversión con días de **8 h hábiles** (480 min); en este cliente el calendario es de 24 h (1.440 min). Confirmar cuál aplica en cada proyecto.
+13. **Departamento y edificio** (`15_Departamento`, `17_Edificio`) pueden venir NULL según el cliente; si es así, usar solo **Sede**.
+14. **Tiempos: todos se dejan en minutos** en las vistas (columnas `*_Min`; cronómetros = minutos hábiles según el calendario del ANS). La conversión a horas, días o `d h m` se hace solo en Power BI, en el formato que pida el usuario (ver `construccion-reporte.md`, sección Tiempos). Ojo: la query original tenía comentada una conversión con días de **8 h hábiles** (480 min); el calendario del ANS puede ser de 24 h (1.440 min) o de jornada hábil. Confirmar cuál aplica en cada cliente.

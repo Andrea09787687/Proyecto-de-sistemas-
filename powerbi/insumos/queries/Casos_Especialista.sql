@@ -1,7 +1,7 @@
 -- Origen: SQL Server | Base: Aranda Service Management (ASMS 9.5.57)
 -- Tabla en Power BI: Casos_Especialista
 -- Descripción: Tablero por especialista (estado de SLA, vencidos, campos adicionales de compañía)
--- Filtros fijos: proyecto 'Pasivocol' y fecha de registro >= 2024-08-12 (ajustar por proyecto)
+-- Filtros fijos: nombre del proyecto y fecha de corte (reemplazar <PROYECTO> y <FECHA_CORTE> en cada cliente)
 -- NOTA: las fechas de esta query están en UTC (no restan 5 horas como las demás).
 WITH ADICIONALES_TC AS (
     SELECT
@@ -94,5 +94,5 @@ LEFT JOIN "dbo"."AFW_USERS" AS "1ER ESPECIALISTA ASIGNADO" ON "1ER ESPECIALISTA 
 LEFT JOIN "dbo"."ASMS_CALENDAR" AS "ASMS_CALENDAR" ON "ASMS_CALENDAR"."CALENDAR_ID" = "ASDK_ITEM_DW_LAST"."calendar_sla_id"
 LEFT JOIN "dbo"."ASMS_MODEL" AS "MODELO" ON "MODELO"."id" = "ASDK_ITEM_DW_LAST"."model_id"
 LEFT JOIN "dbo"."ASDK_SLA" AS "SLA" ON "SLA"."SLA_ID" = "ASDK_ITEM_DW_LAST"."sla_id"
-WHERE "ASMS_PROJECTS"."proj_name" = 'Pasivocol'
-AND "ASDK_ITEM_DW_LAST"."opened_date" >= '2024-08-12';
+WHERE "ASMS_PROJECTS"."proj_name" = '<PROYECTO>'
+AND "ASDK_ITEM_DW_LAST"."opened_date" >= '<FECHA_CORTE>';

@@ -3,6 +3,7 @@
 Haz las preguntas por bloques (máx. 4–5 por mensaje). Salta las que ya se respondan con el manual, las queries o las imágenes. Ofrece opciones cuando ayude (ej.: "¿mensual, semanal o diaria?").
 
 ## Bloque 1 — Objetivo y audiencia
+0. ¿Para qué cliente y qué proyecto(s) de Aranda es? ¿Qué tipos de caso entran (incidentes, requerimientos, problemas, cambios, tareas)?
 1. ¿Para qué se va a usar el tablero? (seguimiento operativo, gerencial, análisis puntual)
 2. ¿Quién lo va a ver? (gerencia, coordinadores, analistas, cliente externo)
 3. ¿Qué decisiones se deben poder tomar con él?
@@ -17,11 +18,12 @@ Haz las preguntas por bloques (máx. 4–5 por mensaje). Salta las que ya se res
 ### Tiempos (siempre preguntar si el tablero tiene tiempos de atención/solución)
 Los tiempos vienen de la base **en minutos**. Pregunta:
 - ¿Los muestro en **minutos** o los convierto? Opciones: horas, días, formato `2 d 03 h 15 m`, o un **selector** para que el usuario elija la unidad en el tablero.
-- Si son días: ¿un día = **24 h** (calendario del ANS de Aranda en este cliente) o = **8 h hábiles**?
+- Si son días: ¿un día = **24 h** (calendario del ANS configurado en Aranda) o = **8 h hábiles**?
 - ¿Promedio, mediana o total? ¿Por caso, por especialista, por grupo?
 No conviertas nada hasta que el usuario lo indique; si no responde, déjalo en minutos.
 
 ## Bloque 3 — Análisis y desgloses
+0. ¿Qué campos necesita ver el cliente? (ej.: número de caso, asunto, estado, especialista, grupo, categoría, servicio, prioridad, fechas, ANS). Si tiene una lista o una imagen, que la envíe.
 1. ¿Por qué dimensiones se quiere analizar? (fecha, región, sede, producto, cliente, responsable…)
 2. ¿Qué filtros/segmentadores deben estar siempre visibles?
 3. ¿Se necesita detalle a nivel de registro (tabla) o exportar a Excel?

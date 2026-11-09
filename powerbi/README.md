@@ -4,14 +4,13 @@ Carpeta de trabajo del agente `power-bi-agent` (definido en `.claude/skills/powe
 
 ## Cómo usarlo
 1. Abre Claude Code en la raíz del repositorio y escribe `/power-bi-agent` (o simplemente "quiero armar un tablero de Power BI").
-2. El agente avanza por fases:
-   1. Explica los recursos y cómo conectar Power BI con Claude (MCP).
-   2. Lee el manual de relaciones y las queries de `insumos/`.
-   3. Te hace preguntas para diseñar el tablero (puedes enviarle imágenes de referencia).
-   4. Crea las **vistas** en la base de datos (`insumos/vistas/`) y te explica cómo ejecutarlas en SSMS.
-   5. Cuando dices **"listo"** (con servidor, base y usuario; sin contraseña), entra a tu Power BI Desktop y arma la conexión a las vistas.
-   6. Crea relaciones, medidas DAX y las páginas del reporte.
-   7. Valida contra la base y te acompaña a publicar.
+2. El agente responde *"¿Qué quieres realizar?"* y avanza por fases, con una pausa ("listo") al final de cada una:
+   1. Preguntas: cliente, objetivo, campos, filtros, páginas e imágenes de referencia.
+   2. Instalación y conexión de Claude con Power BI.
+   3. Diseño de las **vistas** SQL y cómo ejecutarlas en SSMS.
+   4. Conexión de Power BI a la base con los datos que envías (sin contraseña).
+   5. Diseño del tablero: modelo, medidas y páginas.
+   6. Validar y publicar, cuando lo pidas.
 
 ## Dónde dejar cada cosa
 | Carpeta | Qué va |
@@ -39,9 +38,9 @@ Cada cosa nueva va en su carpeta y el agente la usa la próxima vez:
 | Lo que pide un cliente | `insumos/requerimientos-cliente.md` (o una copia por cliente) | Solo pregunta lo que falte |
 | Imágenes de cómo lo quiere ver | `insumos/imagenes-referencia/` | Replica el diseño |
 | Una lección aprendida (error, solución, truco de publicación) | `.claude/skills/power-bi-agent/referencias/publicacion-y-soporte.md` | La usa en soporte |
-| Avance del proyecto | `BITACORA.md` | Sabe en qué se va |
+| Avance del desarrollo del agente | `BITACORA.md` | (uso interno del equipo; el agente no la muestra) |
 
 Puedes pedírselo directamente: *"agrega esta query al proyecto"*, *"guarda esto como regla de Aranda"*, *"anota en la bitácora que…"*.
 
 ## Proyecto en Claude (claude.ai / app de escritorio)
-El texto para "Instrucciones del proyecto" está en `proyecto-claude/INSTRUCCIONES_PROYECTO.md`. Como conocimiento del proyecto se suben: las guías de `.claude/skills/power-bi-agent/referencias/`, `insumos/manual-relaciones/aranda-relaciones.md`, `insumos/requerimientos-cliente.md`, `BITACORA.md`, las queries y las vistas.
+El texto para "Instrucciones del proyecto" está en `proyecto-claude/INSTRUCCIONES_PROYECTO.md`. Como conocimiento del proyecto se suben: las guías de `.claude/skills/power-bi-agent/referencias/`, `insumos/manual-relaciones/aranda-relaciones.md`, `insumos/requerimientos-cliente.md`, las queries y las vistas (de ejemplo).

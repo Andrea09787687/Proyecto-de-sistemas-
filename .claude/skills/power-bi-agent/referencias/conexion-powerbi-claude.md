@@ -19,7 +19,7 @@
 ## 2. Formas de conexión
 
 1. **Power BI Modeling MCP (local)** — la principal. Claude se conecta a la instancia abierta de Power BI Desktop (o a una carpeta PBIP, o a un modelo en un workspace de Fabric) y puede: listar tablas/columnas, crear y editar relaciones, medidas DAX, columnas calculadas, tablas calculadas, jerarquías, ejecutar consultas DAX, revisar buenas prácticas, renombrar en bloque, traducir, etc.
-2. **Claude conectado al computador del usuario (Remote Control)**: la forma que se usó en el tablero de Aerocivil. Una sesión de Claude Code (en la nube o en el app) trabaja directamente sobre una carpeta del computador del usuario donde está Power BI. Desde ahí Claude lee y edita el proyecto PBIP, los CSV y las queries, y puede usar el MCP local. Pasos:
+2. **Claude conectado al computador del usuario (Remote Control)**: forma ya probada en tableros reales. Una sesión de Claude Code (en la nube o en el app) trabaja directamente sobre una carpeta del computador del usuario donde está Power BI. Desde ahí Claude lee y edita el proyecto PBIP, los CSV y las queries, y puede usar el MCP local. Pasos:
    1. Instalar el **app de escritorio de Claude** en el computador donde está Power BI.
    2. En el app: `Configuración > Claude Code > Remote Control` → agregar la carpeta de trabajo (ej.: la carpeta del proyecto PBIP). No sirven la carpeta personal completa ni carpetas ocultas.
    3. Dejar el app abierto y el computador encendido mientras Claude trabaja. Si se cierra o se suspende, la conexión se cae ("se acaba de caer la conexión").

@@ -4,7 +4,7 @@
 -- (ASDK_ITEM_DW_LAST está obsoleta según Aranda).
 -- Cambios frente a la query original:
 --   * Origen: adw.FACT_ASDK_ITEM (+ adw.DIM_ASDK_ITEM_TEXT para asunto, descripción, solución y causa).
---   * Se quita el filtro fijo del proyecto 'Pasivocol' (se filtra en Power BI por PROYECTO).
+--   * Se quitan los filtros fijos de proyecto y fecha de corte (se filtra en Power BI por PROYECTO y periodo).
 --   * FECHA REGISTRO / CIERRE / MODIFICACION / CORREO en hora Colombia (-5 h).
 --   * Semáforo ANS calculado con los cronómetros (no con current_progress, que queda congelado):
 --       PCT_ANS = tiempo real / tiempo estimado del cronómetro 'Solution' × 100
@@ -137,6 +137,6 @@ LEFT JOIN ASMS_MODEL mo              ON mo.id = caso.model_sk
 LEFT JOIN ASDK_SLA sla               ON sla.SLA_ID = caso.sla_sk
 LEFT JOIN ADICIONALES_TC adtc        ON adtc.ID_COMPANY = caso.company_sk AND adtc.NOMBRE = 'Código Municipio'
 LEFT JOIN ADICIONALES_TC adtc1       ON adtc1.ID_COMPANY = caso.company_sk AND adtc1.NOMBRE = 'Tipo Entidad'
-WHERE caso.opened_date >= '2024-08-12'          -- fecha de corte de la query original (UTC); ajustar o quitar
-  -- AND caso.item_type_sk IN (1, 2, 3, 4)      -- descomentar si aparecen tareas u otros ítems que no son casos
+-- WHERE caso.opened_date >= '<FECHA_CORTE>'   -- opcional: fecha de corte (UTC) si el cliente no quiere historia antigua
+--   AND caso.item_type_sk IN (1, 2, 3, 4)     -- opcional: descomentar si aparecen tareas u otros ítems que no son casos
 GO

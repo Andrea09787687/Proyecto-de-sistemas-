@@ -1,6 +1,6 @@
 # Publicación, validación y solución de problemas
 
-Lecciones del tablero Aranda construido para un cliente (Aerocivil), con Claude conectado al computador del usuario. Úsalas en la Fase 6 y siempre que el usuario reporte un problema.
+Lecciones aprendidas en tableros reales construidos sobre Aranda, con Claude conectado al computador del usuario. Úsalas en la Fase 6 y siempre que el usuario reporte un problema.
 
 ## 1. Lista de chequeo antes de publicar
 
