@@ -42,3 +42,6 @@ Cada cosa nueva va en su carpeta y el agente la usa la próxima vez:
 | Avance del proyecto | `BITACORA.md` | Sabe en qué se va |
 
 Puedes pedírselo directamente: *"agrega esta query al proyecto"*, *"guarda esto como regla de Aranda"*, *"anota en la bitácora que…"*.
+
+## Proyecto en Claude (claude.ai / app de escritorio)
+El texto para "Instrucciones del proyecto" está en `proyecto-claude/INSTRUCCIONES_PROYECTO.md`. Como conocimiento del proyecto se suben: las guías de `.claude/skills/power-bi-agent/referencias/`, `insumos/manual-relaciones/aranda-relaciones.md`, `insumos/requerimientos-cliente.md`, `BITACORA.md`, las queries y las vistas.
