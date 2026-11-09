@@ -1,1 +1,4 @@
 node_modules/
+# Power BI: archivos locales/caché
+powerbi/proyecto/**/.pbi/localSettings.json
+powerbi/proyecto/**/.pbi/cache.abf
