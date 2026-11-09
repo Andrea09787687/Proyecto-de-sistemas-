@@ -28,3 +28,17 @@ Carpeta de trabajo del agente `power-bi-agent` (definido en `.claude/skills/powe
 | `salidas/` | Documentos que genera el agente |
 
 `mcp.example.json` es un ejemplo de configuración del MCP para Claude Code (renómbralo a `.mcp.json` en la raíz si quieres usarlo).
+
+## Cómo alimentar el proyecto
+Cada cosa nueva va en su carpeta y el agente la usa la próxima vez:
+
+| Si tienes… | Déjalo en… | El agente… |
+|---|---|---|
+| Una query nueva | `insumos/queries/<NombreTabla>.sql` | La convierte en vista `bi.vw_BI_<NombreTabla>` |
+| Un dato nuevo del manual o una regla validada en producción | `insumos/manual-relaciones/aranda-relaciones.md` (sección 1 si es regla validada) | La aplica en vistas y medidas; las reglas validadas prevalecen sobre la documentación |
+| Lo que pide un cliente | `insumos/requerimientos-cliente.md` (o una copia por cliente) | Solo pregunta lo que falte |
+| Imágenes de cómo lo quiere ver | `insumos/imagenes-referencia/` | Replica el diseño |
+| Una lección aprendida (error, solución, truco de publicación) | `.claude/skills/power-bi-agent/referencias/publicacion-y-soporte.md` | La usa en soporte |
+| Avance del proyecto | `BITACORA.md` | Sabe en qué se va |
+
+Puedes pedírselo directamente: *"agrega esta query al proyecto"*, *"guarda esto como regla de Aranda"*, *"anota en la bitácora que…"*.

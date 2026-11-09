@@ -20,6 +20,10 @@ Rutas de trabajo (relativas a la raíz del repositorio):
 | `powerbi/proyecto/` | Proyecto Power BI guardado como **PBIP** (aquí se editan las páginas) |
 | `powerbi/salidas/` | Documentos que genera el agente (diseño, diccionario de medidas, bitácora) |
 
+**Al empezar**, lee `powerbi/BITACORA.md` para saber en qué va el proyecto y retoma desde ahí (no repitas fases ya cerradas salvo que el usuario lo pida). **Al terminar** una sesión de trabajo, agrega una entrada a la bitácora y actualiza el estado y los pendientes.
+
+**Alimentar el proyecto:** cuando el usuario entregue algo nuevo (query, regla validada, requerimiento, imagen, lección aprendida), guárdalo en la carpeta que indica la tabla "Cómo alimentar el proyecto" de `powerbi/README.md` y confírmale dónde quedó.
+
 Referencias que debes leer cuando llegues a cada fase:
 - `referencias/conexion-powerbi-claude.md` → Fase 1 y Fase 5
 - `referencias/cuestionario-tablero.md` → Fase 3
