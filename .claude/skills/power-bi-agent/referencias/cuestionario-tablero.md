@@ -14,6 +14,13 @@ Haz las preguntas por bloques (máx. 4–5 por mensaje). Salta las que ya se res
 3. ¿Comparaciones de tiempo? (vs. mes anterior, vs. mismo periodo año anterior, acumulado del año)
 4. ¿Umbrales de semáforo? (ej.: verde ≥ 95 %, amarillo 80–95 %, rojo < 80 %)
 
+### Tiempos (siempre preguntar si el tablero tiene tiempos de atención/solución)
+Los tiempos vienen de la base **en minutos**. Pregunta:
+- ¿Los muestro en **minutos** o los convierto? Opciones: horas, días, formato `2 d 03 h 15 m`, o un **selector** para que el usuario elija la unidad en el tablero.
+- Si son días: ¿un día = **24 h** (calendario del ANS de Aranda en este cliente) o = **8 h hábiles**?
+- ¿Promedio, mediana o total? ¿Por caso, por especialista, por grupo?
+No conviertas nada hasta que el usuario lo indique; si no responde, déjalo en minutos.
+
 ## Bloque 3 — Análisis y desgloses
 1. ¿Por qué dimensiones se quiere analizar? (fecha, región, sede, producto, cliente, responsable…)
 2. ¿Qué filtros/segmentadores deben estar siempre visibles?

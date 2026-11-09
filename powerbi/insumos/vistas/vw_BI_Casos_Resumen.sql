@@ -2,7 +2,8 @@
 -- Resumen general de casos (I/P/C/R)
 -- Generada a partir de powerbi/insumos/queries/Casos_Resumen.sql
 -- Cambios frente a la query original: se quitan los filtros @proyecto/@Grupo/@FECHAINI/@FECHAFIN y el ORDER BY (se filtra en Power BI); se agregan 49_Id_Proyecto y 50_Id_Grupo.
--- ⚠ 30_Tiempo (minutos) y 31_Progreso_del_caso (congelado) no son confiables: usar los cronómetros (ver manual, sección 1).
+-- Tiempos: TODOS en minutos (columnas *_Min; cronómetros = minutos hábiles). La conversión a horas/días se hace en Power BI.
+-- ⚠ 30_Tiempo_Min (current_time) y 31_Progreso_del_caso (congelado) no son confiables: usar los cronómetros 32–35 (ver manual, sección 1).
 -- Ejecutar en SSMS sobre la base de Aranda con un usuario que tenga permiso CREATE VIEW (DBA).
 CREATE OR ALTER VIEW bi.vw_BI_Casos_Resumen
 AS
@@ -122,7 +123,7 @@ SELECT
  ,Urgencia.code_value											[27_Urgencia]
  ,Prioridad.code_value											[28_Prioridad]
  ,ASDK_SLA.NAME													[29_SLA]
- ,ROUND(CASO.[current_time], 2)                              [30_Tiempo]
+ ,ROUND(CASO.[current_time], 2)                              [30_Tiempo_Min]
  ,ROUND(caso.current_progress, 2)                   [31_Progreso_del_caso]
  ,ROUND((
 	SELECT top 1 [Attention]
@@ -139,7 +140,7 @@ SELECT
 	) s
 	PIVOT ( MAX(estimated_time) FOR name IN ([Attention]) ) p
 	where item_id = CASO.id    order by [Attention] DESC
-	), 2)                           [32_Tiempo_Atencion_Estimado]
+	), 2)                           [32_Tiempo_Atencion_Estimado_Min]
  ,ROUND((
 	SELECT top 1 [Attention]
 	FROM (
@@ -155,7 +156,7 @@ SELECT
 	) s
 	PIVOT ( MAX(sdb_current_time) FOR name IN ([Attention]) ) p
 	where item_id = CASO.id    order by [Attention] DESC
-	), 2)              [33_Tiempo_Atencion_Real]
+	), 2)              [33_Tiempo_Atencion_Real_Min]
  ,ROUND((
 	SELECT top 1 [Solution]
 	FROM (
@@ -171,7 +172,7 @@ SELECT
 	) s
 	PIVOT ( MAX(estimated_time) FOR name IN ([Solution]) ) p
 	where item_id = CASO.id    order by [Solution] DESC
-	), 2)                           [34_Tiempo_Solucion_Estimado]
+	), 2)                           [34_Tiempo_Solucion_Estimado_Min]
  ,ROUND( (
 	SELECT top 1 [Solution]
 	FROM (
@@ -188,7 +189,7 @@ SELECT
 	PIVOT ( MAX(sdb_current_time) FOR name IN ([Solution]) ) p
 	where item_id = CASO.id    order by [Solution] DESC
 	)
-       ,2)                                                  [35_Tiempo_Solucion_Real]
+       ,2)                                                  [35_Tiempo_Solucion_Real_Min]
   /*
   CONCAT(
          CAST(FLOOR(CONVERT(Numeric(18, 2),  Isnull([Tiempo_Atencion], 0)) / (8 * 60))                  AS VARCHAR(100)), ':', --' días ',--de 8 horas habiles

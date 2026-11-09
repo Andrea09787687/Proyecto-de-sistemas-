@@ -34,6 +34,40 @@ Orden recomendado:
 7. Ejecutar la revisión de buenas prácticas del MCP (si está disponible) y reportar hallazgos.
 8. RLS si se pidió: crear el rol con su filtro DAX y explicar al usuario cómo probarlo (`Modelado > Ver como`).
 
+## A2. Tiempos (minutos → formato pedido)
+
+Regla: en la vista y en el modelo los tiempos quedan **en minutos** (columnas `*_Min`). La conversión se hace solo con medidas, y **solo en el formato que el usuario pida** (Fase 3). Medidas base:
+```dax
+Tiempo Solucion Prom (min) = AVERAGE ( Casos_Resumen[35_Tiempo_Solucion_Real_Min] )
+Tiempo Atencion Prom (min) = AVERAGE ( Casos_Resumen[33_Tiempo_Atencion_Real_Min] )
+```
+Conversiones (crear solo las que se pidan). `MinutosPorDia` = 1440 (día de 24 h) o 480 (día de 8 h hábiles), según lo que confirme el usuario:
+```dax
+Tiempo Solucion Prom (h) = DIVIDE ( [Tiempo Solucion Prom (min)], 60 )
+Tiempo Solucion Prom (días) = DIVIDE ( [Tiempo Solucion Prom (min)], 1440 )   -- o 480
+
+Tiempo Solucion Prom (d h m) =
+VAR m = [Tiempo Solucion Prom (min)]
+VAR MinDia = 1440                                  -- o 480
+VAR d = INT ( m / MinDia )
+VAR h = INT ( MOD ( m, MinDia ) / 60 )
+VAR mi = ROUND ( MOD ( m, 60 ), 0 )
+RETURN IF ( ISBLANK ( m ), BLANK (), d & " d " & FORMAT ( h, "00" ) & " h " & FORMAT ( mi, "00" ) & " m" )
+```
+El formato `d h m` es texto: sirve para tarjetas y tablas, **no** para gráficos (ahí usar minutos, horas o días numéricos).
+
+**Selector de unidad (si lo piden):** tabla desconectada y `SWITCH`:
+```dax
+Unidad Tiempo = DATATABLE ( "Unidad", STRING, "Orden", INTEGER, { { "Minutos", 1 }, { "Horas", 2 }, { "Días", 3 } } )
+
+Tiempo Solucion Prom = 
+SWITCH ( SELECTEDVALUE ( 'Unidad Tiempo'[Unidad], "Minutos" ),
+    "Horas", [Tiempo Solucion Prom (h)],
+    "Días",  [Tiempo Solucion Prom (días)],
+    [Tiempo Solucion Prom (min)] )
+```
+Agregar un segmentador de botones con `'Unidad Tiempo'[Unidad]` (ordenado por `Orden`) y un título dinámico: `"Tiempo promedio de solución (" & SELECTEDVALUE('Unidad Tiempo'[Unidad], "Minutos") & ")"`.
+
 ## B. Páginas y visuales (formato PBIP / PBIR)
 
 Estructura del proyecto guardado en `powerbi/proyecto/`:

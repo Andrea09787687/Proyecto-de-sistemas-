@@ -3,6 +3,7 @@
 -- Generada a partir de powerbi/insumos/queries/Casos_Especialista.sql
 -- Cambios frente a la query original: se quita el filtro fijo del proyecto 'Pasivocol' (se filtra en Power BI por PROYECTO); FECHA REGISTRO y FECHA CIERRE pasan a hora Colombia (-5 h). Se conserva opened_date >= 2024-08-12 (ajustar o quitar).
 -- ⚠ Usa dbo.ASDK_ITEM_DW_LAST, que Aranda marca como OBSOLETA: migrar a adw.FACT_ASDK_ITEM + adw.DIM_ASDK_ITEM_TEXT (ver manual, sección 1).
+-- Tiempos: en minutos (TIEMPO_MIN). La conversión a horas/días se hace en Power BI.
 -- Ejecutar en SSMS sobre la base de Aranda con un usuario que tenga permiso CREATE VIEW (DBA).
 CREATE OR ALTER VIEW bi.vw_BI_Casos_Especialista
 AS
@@ -55,7 +56,7 @@ SELECT
     "ADTC"."VALOR_STRING" AS "Código Municipio",
     "ADTC1"."VALOR_STRING" AS "Tipo Entidad",
     "ASDK_ITEM_DW_LAST"."current_progress",
-    "ASDK_ITEM_DW_LAST"."current_time",
+    "ASDK_ITEM_DW_LAST"."current_time" AS "TIEMPO_MIN",
     CASE
        -- WHEN "ASDK_ITEM_DW_LAST"."current_progress" >= 101 THEN 'VENCIDOS'
         WHEN "ASDK_ITEM_DW_LAST"."current_progress" <= 80 THEN 'Dentro de SLA'

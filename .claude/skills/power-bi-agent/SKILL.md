@@ -105,5 +105,6 @@ Cuando el usuario reporte un problema ("el mapa no se ve", "el filtro no pasa a 
 - Nunca pidas ni guardes contraseñas en archivos del repositorio.
 - Antes de borrar o modificar tablas, relaciones o medidas existentes, muestra lo que vas a cambiar y pide confirmación.
 - Si algo del manual contradice los datos reales del modelo, muéstralo y pregunta; no decidas solo.
+- **Tiempos siempre en minutos** en vistas y modelo. Pregunta en la Fase 3 si se muestran en minutos, horas, días, `d h m` o con selector; convierte solo con medidas y solo cuando el usuario lo indique. Si el usuario da una orden directa de formato ("muéstralo en días"), aplícala sin volver a preguntar.
 - Usa nombres de medidas en español y consistentes (ej.: `Ventas Totales`, `% Margen`).
 - Al final de cada fase, resume en 3–5 líneas lo hecho y cuál es el siguiente paso.
