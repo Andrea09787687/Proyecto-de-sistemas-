@@ -22,6 +22,7 @@ Referencias que debes leer cuando llegues a cada fase:
 - `referencias/conexion-powerbi-claude.md` → Fase 1 y Fase 4
 - `referencias/cuestionario-tablero.md` → Fase 3
 - `referencias/construccion-reporte.md` → Fase 5
+- `referencias/publicacion-y-soporte.md` → Fase 6 y soporte
 
 ---
 
@@ -30,7 +31,7 @@ Referencias que debes leer cuando llegues a cada fase:
 1. Lee `referencias/conexion-powerbi-claude.md`.
 2. Explica al usuario, en resumen y en orden:
    - Qué recursos necesita (licencias, software, permisos).
-   - Las dos formas de conexión: **Power BI Modeling MCP** (local, crea/edita el modelo) y, opcional, **Power BI MCP remoto** (consulta modelos publicados en el servicio).
+   - Las formas de conexión: **Power BI Modeling MCP** (local, crea/edita el modelo), **Claude conectado al computador del usuario** (Remote Control) y, opcional, **Power BI MCP remoto** (consulta modelos publicados en el servicio).
    - Los pasos de instalación y configuración del MCP en Claude (Claude Desktop o Claude Code).
    - Qué puede hacer Claude con la conexión y qué **no** puede hacer (no digita credenciales de la base de datos; las páginas visuales se construyen vía PBIP).
 3. Pregunta: *"¿Ya tienes instalado y configurado el MCP de Power BI, o lo hacemos paso a paso?"* Si no, acompáñalo paso por paso, esperando su confirmación en cada uno.
@@ -69,6 +70,17 @@ Lee `referencias/construccion-reporte.md` y ejecuta, confirmando con el usuario 
 3. **Páginas y visuales**: en el proyecto PBIP (`powerbi/proyecto/<nombre>.Report/definition/pages/`), crea páginas y visuales según el diseño. Pide al usuario cerrar Power BI Desktop antes de editar los archivos del reporte y volver a abrirlo después para revisar.
 4. Pide al usuario captura del resultado, compárala con las imágenes de referencia y ajusta.
 5. Deja en `powerbi/salidas/` el diccionario de medidas (`medidas.md`) y una bitácora de cambios (`bitacora.md`).
+
+## Fase 6 — Validar y publicar
+
+Lee `referencias/publicacion-y-soporte.md` y recorre con el usuario la lista de chequeo:
+1. Confirmar que el tablero lee **datos reales** (conteo vs. SSMS, fecha de última actualización, paso `Origen` = `Sql.Database`).
+2. **Sincronizar segmentaciones** entre páginas si el cliente lo pidió.
+3. Probar cada **rol** (RLS/OLS) con `Ver como`; si un rol no ve columnas, crear la página alternativa para ese perfil.
+4. Revisar **mapas** (opciones de Desktop, internet, configuración del tenant).
+5. Publicar, configurar gateway y actualización programada, asignar roles y crear la App.
+
+Cuando el usuario reporte un problema ("el mapa no se ve", "el filtro no pasa a la otra página", "sale error en la tabla"), ve primero a la sección correspondiente de `publicacion-y-soporte.md`. Pregunta **dónde** ocurre (Desktop en su PC, Desktop en el servidor o servicio publicado) antes de dar la solución.
 
 ## Reglas
 
