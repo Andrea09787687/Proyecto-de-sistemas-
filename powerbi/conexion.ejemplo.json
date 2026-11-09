@@ -1,16 +1,45 @@
 {
   "_nota": "Copia este archivo como conexion.json (no se sube a GitHub). NUNCA pongas la contraseña aquí: Power BI la pide una vez al actualizar.",
+  "modo": "vista",
+  "esquema_vistas": "bi",
   "servidor": "SERVIDOR,1433",
   "base_datos": "ASMS",
   "autenticacion": "sql",
   "usuario": "usuario_lectura_bi",
-  "parametros": {
-    "proyecto": { "tipo": "INT",          "valor": 1 },
-    "grupo":    { "tipo": "VARCHAR(500)", "valor": "12,15" },
-    "fechaini": { "tipo": "DATE",         "valor": "2025-01-01" },
-    "fechafin": { "tipo": "DATE",         "valor": "2025-12-31" }
+  "fechas": {
+    "inicio": "2024-01-01",
+    "fin": "2026-12-31"
   },
   "tablas": {
-    "Inventario_ADM": { "base_datos": "ADM" }
+    "Casos_Resumen": {
+      "columna_fecha": "18_Fecha_de_Registro"
+    },
+    "Tareas_Resumen": {
+      "columna_fecha": "fecha_registro_tarea"
+    },
+    "Casos_Especialista": {
+      "columna_fecha": "FECHA REGISTRO"
+    },
+    "Inventario_ADM": {
+      "base_datos": "ADM"
+    }
+  },
+  "_parametros_solo_modo_query": {
+    "proyecto": {
+      "tipo": "INT",
+      "valor": 1
+    },
+    "grupo": {
+      "tipo": "VARCHAR(500)",
+      "valor": "12,15"
+    },
+    "fechaini": {
+      "tipo": "DATE",
+      "valor": "2025-01-01"
+    },
+    "fechafin": {
+      "tipo": "DATE",
+      "valor": "2025-12-31"
+    }
   }
 }

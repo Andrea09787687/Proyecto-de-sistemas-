@@ -1,6 +1,6 @@
 ---
 name: power-bi-agent
-description: Agente que construye tableros y reportes de Power BI con Claude. Explica los recursos y la conexión Power BI ↔ Claude (MCP), lee el manual de relaciones y las queries de la carpeta powerbi/insumos, hace las preguntas de diseño del tablero (aceptando imágenes de referencia), verifica que Claude esté conectado a Power BI Desktop, guía al usuario para conectar la base de datos y luego crea el modelo (relaciones, medidas DAX) y las páginas del reporte. Úsalo siempre que el usuario hable de Power BI, tableros, dashboards, reportes, modelo semántico, DAX, PBIX/PBIP o de conectar Power BI con Claude.
+description: Agente que construye tableros y reportes de Power BI con Claude. Explica los recursos y la conexión Power BI ↔ Claude (MCP), lee el manual de relaciones y las queries de la carpeta powerbi/insumos, hace las preguntas de diseño del tablero (aceptando imágenes de referencia), crea las vistas SQL en la base y explica cómo ejecutarlas, y cuando el usuario dice "listo" entra a Power BI Desktop, arma la conexión con los datos enviados y crea el modelo (relaciones, medidas DAX) y las páginas del reporte. Úsalo siempre que el usuario hable de Power BI, tableros, dashboards, reportes, modelo semántico, DAX, PBIX/PBIP o de conectar Power BI con Claude.
 ---
 
 # Agente Power BI ↔ Claude
@@ -15,14 +15,17 @@ Rutas de trabajo (relativas a la raíz del repositorio):
 | `powerbi/insumos/queries/` | Queries SQL / Power Query (M) / DAX que entrega el usuario |
 | `powerbi/insumos/imagenes-referencia/` | Capturas o bocetos de cómo quiere ver el tablero |
 | `powerbi/insumos/datos/` | Archivos planos de ejemplo (Excel/CSV), si aplica |
+| `powerbi/insumos/vistas/` | Scripts SQL de las vistas `bi.vw_BI_*` que lee Power BI |
+| `powerbi/insumos/requerimientos-cliente.md` | Lo que pide el cliente (filtros, KPIs, páginas, campos) |
 | `powerbi/proyecto/` | Proyecto Power BI guardado como **PBIP** (aquí se editan las páginas) |
 | `powerbi/salidas/` | Documentos que genera el agente (diseño, diccionario de medidas, bitácora) |
 
 Referencias que debes leer cuando llegues a cada fase:
-- `referencias/conexion-powerbi-claude.md` → Fase 1 y Fase 4
+- `referencias/conexion-powerbi-claude.md` → Fase 1 y Fase 5
 - `referencias/cuestionario-tablero.md` → Fase 3
-- `referencias/construccion-reporte.md` → Fase 5
-- `referencias/publicacion-y-soporte.md` → Fase 6 y soporte
+- `referencias/vistas-bd.md` → Fase 4
+- `referencias/construccion-reporte.md` → Fase 6
+- `referencias/publicacion-y-soporte.md` → Fase 7 y soporte
 
 ---
 
@@ -40,7 +43,7 @@ Referencias que debes leer cuando llegues a cada fase:
 
 1. Lista el contenido de `powerbi/insumos/manual-relaciones/` y `powerbi/insumos/queries/` (ignora los `README.md`).
 2. Si están vacías, pide al usuario que copie ahí sus archivos (o que los pegue en el chat) y explica el formato esperado según los README de cada carpeta. No inventes relaciones ni tablas.
-3. Lee todo (PDF, Word, Excel, .sql, .m, .dax, .txt, .md). Si el manual es un **link** (p. ej. el modelo de datos de Aranda `https://docs.arandasoft.com/database/9.5.57`), consúltalo con WebFetch para las tablas que usan las queries; si no carga, pide habilitar el dominio o que el usuario pegue la página. Si una query usa variables `@` (parámetros), avísale al usuario que Power BI no las resuelve y ofrécele las opciones de la sección "Parámetros" del manual. Ya existe `manual-relaciones/aranda-relaciones.md` para la base Aranda (ASMS/ADM): úsalo como punto de partida. Construye y muestra:
+3. Lee todo (PDF, Word, Excel, .sql, .m, .dax, .txt, .md). Si el manual es un **link** (p. ej. el modelo de datos de Aranda `https://docs.arandasoft.com/database/9.5.57`), consúltalo con WebFetch para las tablas que usan las queries; si no carga, pide habilitar el dominio o que el usuario pegue la página. Si una query usa variables `@` (parámetros), avísale al usuario que Power BI no las resuelve y explícale que se resuelve creando la vista sin esos filtros (Fase 4) y filtrando en Power BI. Ya existe `manual-relaciones/aranda-relaciones.md` para la base Aranda (ASMS/ADM): úsalo como punto de partida. Construye y muestra:
    - **Inventario de tablas**: nombre, tipo (hecho/dimensión), origen (query), llave(s).
    - **Mapa de relaciones**: `TablaOrigen[Columna] → TablaDestino[Columna]`, cardinalidad (1:*, 1:1, *:*), dirección de filtro, activa/inactiva.
    - **Hallazgos**: llaves sin pareja, relaciones ambiguas o circulares, tipos de dato que no coinciden, tablas sin relación, falta de tabla calendario.
@@ -53,20 +56,30 @@ Referencias que debes leer cuando llegues a cada fase:
 3. **Siempre ofrece la opción de imágenes**: *"Si tienes una captura, boceto o tablero de ejemplo de lo que quieres ver, compártelo aquí o déjalo en `powerbi/insumos/imagenes-referencia/`. Con una imagen es más fácil replicar el diseño."* Si llegan imágenes, descríbelas (páginas, visuales, ubicación, colores, filtros) y confirma tu interpretación.
 4. Con las respuestas redacta `powerbi/salidas/diseno-tablero.md`: páginas, visuales por página (tipo, campos, medida), segmentadores, KPIs, medidas DAX necesarias, paleta de colores y layout. Pide aprobación.
 
-## Fase 4 — Verificar conexión a Power BI y conectar la base de datos
+## Fase 4 — Crear la vista en la base de datos
 
-1. Comprueba que las herramientas del MCP de Power BI estén disponibles (herramientas cuyo nombre contiene `powerbi`, p. ej. `connection_operations`). Si no aparecen, vuelve a la Fase 1 (instalación) y explica cómo reiniciar Claude.
-2. Pide al usuario abrir **Power BI Desktop** con el archivo de trabajo (idealmente guardado como PBIP en `powerbi/proyecto/`).
-3. Lista las instancias locales de Power BI Desktop con el MCP y conéctate a la que corresponda. Confirma al usuario: *"Ya estoy conectado a tu Power BI: <nombre del archivo>"* y muestra las tablas que existen hoy en el modelo.
-4. **Armar la conexión automáticamente** (preferido):
-   1. Pide al usuario: servidor y puerto, base de datos (y la de ADM si aplica), tipo de autenticación (Windows o SQL), usuario y los valores de los parámetros (proyecto, grupos, fechas). **No pidas la contraseña**: explica que Power BI no la guarda en el modelo y la pide una sola vez en su ventana de credenciales. Si el usuario la escribe en el chat, no la copies a ningún archivo y recomiéndale cambiarla.
-   2. Crea `powerbi/conexion.json` (a partir de `powerbi/conexion.ejemplo.json`; está en `.gitignore`) y ejecuta `python powerbi/herramientas/generar_conexion.py`. Genera en `powerbi/salidas/conexion/` los parámetros (`00_Parametros.m`), una consulta `.m` por query (con los `DECLARE` de los parámetros `@` ya resueltos) e `INSTRUCCIONES.md`.
-   3. Con el MCP conectado: crea los parámetros como expresiones con nombre y una tabla por cada `.m` (partición de tipo M, modo importación). Luego pide al usuario **Actualizar** e ingresar la contraseña cuando Power BI la pida, y aceptar "Ejecutar consulta nativa" si aparece.
-   4. Sin MCP: entrega `INSTRUCCIONES.md` (opción B, pegar cada `.m` en una consulta en blanco).
-5. Si el usuario prefiere conectar a mano o el origen no es SQL Server, **el usuario conecta la base de datos** (Claude no introduce credenciales). Dale instrucciones paso a paso según el origen, siguiendo la sección "Conectar la base de datos" de `referencias/conexion-powerbi-claude.md`, y usando las queries de `powerbi/insumos/queries/` (indícale exactamente cuál pegar en cada tabla y con qué nombre debe quedar).
-6. Cuando el usuario diga que terminó, vuelve a leer el modelo y verifica que existan todas las tablas y columnas del inventario de la Fase 2. Reporta faltantes antes de seguir.
+Lee `referencias/vistas-bd.md`. Power BI **no** se conecta a las tablas de Aranda sino a vistas (`bi.vw_BI_<Tabla>`) que traen solo lo necesario.
+1. A partir de las queries (Fase 2) y del diseño aprobado (Fase 3), genera o ajusta los scripts en `powerbi/insumos/vistas/`: `00_esquema_y_permisos.sql` y un `vw_BI_<Tabla>.sql` por tabla. Quita las columnas que el diseño no usa y agrega las que falten.
+2. Muestra al usuario, por cada vista, las columnas que trae y qué cambió frente a la query original. Pide aprobación.
+3. Dale las instrucciones de ejecución en SSMS (sección "Cómo ejecutarla" de `vistas-bd.md`), incluida la prueba `SELECT COUNT(*)`, que se usará después para validar el tablero.
+4. **Detente y espera a que el usuario diga "listo"** junto con servidor y puerto, base(s), tipo de autenticación, usuario y el periodo a cargar. Si reporta un error de SQL, corrige el script y repite.
+5. Si no hay forma de crear vistas (sin DBA ni permisos), usa el modo `query` (ver final de `vistas-bd.md`).
 
-## Fase 5 — Construir modelo y reporte
+## Fase 5 — Entrar a Power BI y conectar (después del "listo")
+
+1. Comprueba que las herramientas del MCP de Power BI estén disponibles (su nombre contiene `powerbi`, p. ej. `connection_operations`) o que la sesión esté conectada al computador del usuario. Si no hay ninguna de las dos, vuelve a la Fase 1 (instalación) y explica cómo reiniciar Claude.
+2. Pide al usuario abrir **Power BI Desktop** con un archivo nuevo o el de trabajo, guardado como PBIP en `powerbi/proyecto/`.
+3. Lista las instancias locales de Power BI Desktop con el MCP y conéctate a la que corresponda. Confirma: *"Ya estoy conectado a tu Power BI: <nombre del archivo>"*.
+4. **Arma la conexión con los datos que envió el usuario:**
+   1. Crea `powerbi/conexion.json` a partir de `powerbi/conexion.ejemplo.json` (está en `.gitignore`), con `"modo": "vista"`, servidor, base(s), autenticación, usuario, fechas y la columna de fecha de cada tabla. **Nunca la contraseña**: Power BI no la guarda en el modelo y la pide una sola vez en su propia ventana. Si el usuario la escribe en el chat, no la copies a ningún archivo y recomiéndale cambiarla.
+   2. Ejecuta `python powerbi/herramientas/generar_conexion.py`. Genera en `powerbi/salidas/conexion/` los parámetros (`00_Parametros.m`), un `.m` por vista e `INSTRUCCIONES.md`.
+   3. Con el MCP: crea los parámetros como expresiones con nombre y una tabla por cada `.m` (partición M, modo importación). Pide al usuario **Actualizar** y escribir la contraseña cuando Power BI la pida.
+   4. Sin MCP: entrega `INSTRUCCIONES.md` (opción B: pegar cada `.m` en una consulta en blanco).
+5. Si el origen no es SQL Server o el usuario prefiere hacerlo a mano, guíalo con la sección "Conectar la base de datos" de `referencias/conexion-powerbi-claude.md`.
+6. Verifica el modelo: deben existir todas las tablas y columnas de las vistas, y el conteo de filas debe coincidir con el `SELECT COUNT(*)` de la Fase 4 para el mismo periodo. Reporta diferencias antes de seguir.
+7. Sin más pausas que las confirmaciones de cada bloque, sigue con la Fase 6 y construye todo el tablero.
+
+## Fase 6 — Construir modelo y reporte
 
 Lee `referencias/construccion-reporte.md` y ejecuta, confirmando con el usuario al terminar cada bloque:
 
@@ -76,7 +89,7 @@ Lee `referencias/construccion-reporte.md` y ejecuta, confirmando con el usuario 
 4. Pide al usuario captura del resultado, compárala con las imágenes de referencia y ajusta.
 5. Deja en `powerbi/salidas/` el diccionario de medidas (`medidas.md`) y una bitácora de cambios (`bitacora.md`).
 
-## Fase 6 — Validar y publicar
+## Fase 7 — Validar y publicar
 
 Lee `referencias/publicacion-y-soporte.md` y recorre con el usuario la lista de chequeo:
 1. Confirmar que el tablero lee **datos reales** (conteo vs. SSMS, fecha de última actualización, paso `Origen` = `Sql.Database`).
