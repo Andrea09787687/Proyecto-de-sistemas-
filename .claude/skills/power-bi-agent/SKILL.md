@@ -39,7 +39,7 @@ Referencias que debes leer cuando llegues a cada fase:
 
 1. Lista el contenido de `powerbi/insumos/manual-relaciones/` y `powerbi/insumos/queries/` (ignora los `README.md`).
 2. Si están vacías, pide al usuario que copie ahí sus archivos (o que los pegue en el chat) y explica el formato esperado según los README de cada carpeta. No inventes relaciones ni tablas.
-3. Lee todo (PDF, Word, Excel, .sql, .m, .dax, .txt, .md). Construye y muestra:
+3. Lee todo (PDF, Word, Excel, .sql, .m, .dax, .txt, .md). Si el manual es un **link** (p. ej. el modelo de datos de Aranda `https://docs.arandasoft.com/database/9.5.57`), consúltalo con WebFetch para las tablas que usan las queries; si no carga, pide habilitar el dominio o que el usuario pegue la página. Si una query usa variables `@` (parámetros), avísale al usuario que Power BI no las resuelve y ofrécele las opciones de la sección "Parámetros" del manual. Ya existe `manual-relaciones/aranda-relaciones.md` para la base Aranda (ASMS/ADM): úsalo como punto de partida. Construye y muestra:
    - **Inventario de tablas**: nombre, tipo (hecho/dimensión), origen (query), llave(s).
    - **Mapa de relaciones**: `TablaOrigen[Columna] → TablaDestino[Columna]`, cardinalidad (1:*, 1:1, *:*), dirección de filtro, activa/inactiva.
    - **Hallazgos**: llaves sin pareja, relaciones ambiguas o circulares, tipos de dato que no coinciden, tablas sin relación, falta de tabla calendario.
